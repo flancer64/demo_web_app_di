@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeqFW DI Demo</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module">
+        import Container from 'https://unpkg.com/@teqfw/di';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Create the objects container
+                /** @type {TeqFw_Di_Api_Container} */
+                const container = new Container();
+
+                // Add path mapping for the sources (app itself and used library)
+                const url = new URL(location.href);
+                const root = url.href.replace('index.html', '');
+                const pathApp = root + '/js';
+                const resolver = container.getResolver();
+                resolver.addNamespaceRoot('Demo', pathApp);
+
+                // Compose the application and run it
+                const app = await container.get('Demo_App$');
+                app.run();
+            } catch (e) {
+                console.error(e);
+            }
+        });
+    </script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <h1>To-do List</h1>
+    <input type="text" id="new-todo" placeholder="Add a new task...">
+    <button id="add-btn">Add</button>
+    <ul id="todo-list"></ul>
+</div>
+</body>
+</html>
